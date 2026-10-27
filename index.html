@@ -3,65 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World's Simplest Trading Calculator</title>
+<title>TradeHisab LotCalc.pk - World's Simplest Trading Calculator</title>
 <style>
-:root{--bg:#09090b;--card:#141414;--border:#222;--green:#7CFF5D;--text:#fff;--muted:#9ca3af}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:var(--bg);color:var(--text)}
-header{display:flex;justify-content:space-between;padding:14px 5%;border-bottom:1px solid var(--border)}
-.logo{font-weight:800;font-size:22px}.logo small{color:var(--green)}
-.btn{background:var(--green);color:#000;border:none;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
-.badge{display:inline-block;background:var(--green);color:#000;font-weight:700;font-size:12px;padding:8px 16px;border-radius:999px;margin:20px 0}
-.hero{text-align:center;padding:20px 5%}.hero h1{font-size:42px}.hero p{color:var(--muted);max-width:700px;margin:0 auto}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1200px;margin:20px auto;padding:0 5% 40px}
+:root{--bg:#09090b;--card:#141414;--border:#222;--green:#7fff7f;--muted:#888;--text:#eee}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border)}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--green)}
+.btn{background:var(--green);color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer}
+.badge{display:inline-block;background:rgba(127,255,127,.15);color:var(--green);padding:5px 12px;border-radius:20px;font-size:11px;margin-bottom:12px;border:1px solid rgba(127,255,127,.3)}
+.hero{text-align:center;padding:28px 16px}
+.hero h1{font-size:28px;margin-bottom:8px}.hero p{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1000px;margin:0 auto;padding:0 16px}
 @media(max-width:850px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
-label{font-size:12px;color:var(--muted);margin-bottom:4px;display:block}
-select,input{width:100%;background:#0e0e0e;border:1px solid #2a2a2a;color:#fff;padding:12px;border-radius:10px;margin-bottom:12px}
-.result{border:1px solid rgba(124,255,93,.3);border-radius:12px;padding:14px;margin-bottom:10px;background:linear-gradient(90deg,rgba(124,255,93,.08),transparent)}
-.result h2{color:var(--green);font-size:24px}
-.negative{color:#ff5a5a !important}
-footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+label{font-size:12px;color:var(--muted);display:block;margin:10px 0 4px}
+select,input{width:100%;background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:10px;border-radius:8px;outline:none}
+select:focus,input:focus{border-color:var(--green)}
+.result{border:1px solid rgba(124,255,124,.3);border-radius:10px;padding:12px;margin-top:12px;background:#0f0f0f}
+.result h2{color:var(--green);font-size:13px;margin-bottom:4px}
+#assetSearch{margin-bottom:6px}
+#assetList{max-height:260px;overflow:auto;border:1px solid var(--border);border-radius:8px;display:none;background:#0a0a0a}
+#assetList div{padding:8px 10px;font-size:12px;cursor:pointer;border-bottom:1px solid #111}
+#assetList div:hover{background:#1a1a1a;color:var(--green)}
+#assetList b{color:var(--muted);font-size:10px;display:block}
+.cat{color:var(--green);font-size:10px;font-weight:800;padding:6px 10px;background:#111;position:sticky;top:0}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:11px}
 </style>
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </head>
 <body>
-<header><div class="logo">📈 TradeHisab <small>LotCalc.pk</small></div><button class="btn">Get Started</button></header>
-<div class="hero"><span class="badge">🚀 Made for Global Traders • Free • No Signup</span><h1>World's Simplest Trading Calculator</h1><p>Calculate margin, profit/loss, and risk in seconds — accurate, fast, and modern. Built for global traders.</p></div>
-<div class="grid">
-<div class="card">
-<label>Select Asset</label><select id="asset"><option>XAUUSD (Gold)</option><option>EURUSD</option><option>GBPUSD</option><option>BTCUSD</option></select>
-<label>Broker & Leverage</label><select id="lev"><option value="2000">Exness Standard 1:2000</option><option value="500">1:500</option><option value="100">1:100</option></select>
-<label>Account Balance (USD)</label><input id="bal" type="number" value="10000">
-<label>Lot Size</label><input id="lot" type="number" value="0.10">
-<label>Entry Price</label><input id="entry" type="number" value="2850.50">
-<label>Stop Loss</label><input id="sl" type="number" value="2835.00">
-<button class="btn" style="width:100%;padding:14px" onclick="calc()">Calculate</button>
-</div>
-<div><div class="card"><h3>Results</h3><div class="result"><label>Margin (USD)</label><h2 id="m">$100.00</h2><small id="mPKR">PKR 28,150</small></div><div class="result"><label>Profit / Loss</label><h2 id="pl" class="negative">-1,550 PKR</h2><small id="pips">15.5 pips</small></div><div class="result"><label>Risk Amount</label><h2 id="risk">1,550 PKR</h2><small id="riskP">15.5% of balance</small></div><button class="btn" style="width:100%;background:#22c55e" onclick="shareWA()">Share on WhatsApp</button></div></div>
-</div>
-<footer>TradeHisab / LotCalc.pk — Built for the World 🌍 • Educational only.</footer>
-<script>
-const RATE=281.5;
-function calc(){
- const lot=parseFloat(document.getElementById('lot').value)||0;
- const entry=parseFloat(document.getElementById('entry').value)||0;
- const sl=parseFloat(document.getElementById('sl').value)||0;
- const bal=parseFloat(document.getElementById('bal').value)||1;
- const lev=parseFloat(document.getElementById('lev').value)||2000;
- let margin=(lot*100*entry)/lev;
- let diff=Math.abs(entry-sl);
- let lossUSD=lot*100*diff;
- let lossPKR=lossUSD*RATE;
- document.getElementById('m').innerText='$'+margin.toFixed(2);
- document.getElementById('mPKR').innerText='PKR '+Math.round(margin*RATE).toLocaleString();
- document.getElementById('pl').innerText='-'+Math.round(lossPKR).toLocaleString()+' PKR';
- document.getElementById('pips').innerText=diff.toFixed(2)+' pips';
- document.getElementById('risk').innerText=Math.round(lossPKR).toLocaleString()+' PKR';
- document.getElementById('riskP').innerText='≈ '+((lossUSD/bal)*100).toFixed(1)+'% of balance';
-}
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent('TradeHisab Calculator - '+document.getElementById('m').innerText));}
-calc();
-</script>
-</body>
-</html>
+<header><div class="logo">📈 TradeHisab <span>LotCalc.pk</span></div><a href="#" class="btn" style="font-size:12px;text-decoration:none">Get Started</a></header>
+<div class="hero"><span class="badge">Made for Global Traders • Free • No Signup</span><h1>World's Simplest Trading Calculator</h1><p>Calculate margin, profit/loss
