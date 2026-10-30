@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeHisab LotCalc.pk - World's Simplest Trading Calculator in PKR</title>
+<meta name="description" content="Calculate margin, profit/loss in your own currency - 154 Exness instruments. Live PKR, INR rates.">
+<style>
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#0a0e0a;color:#fff}
+.header{background:#0a0e0a;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid #1a2a1a}
+.logo{font-size:22px;font-weight:900;display:flex;align-items:center;gap:6px}
+.logo span{color:#4ade80}
+.live-badge{background:#1a2e1a;border:1px solid #2a5a2a;color:#4ade80;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.top-btns{display:flex;gap:10px;padding:10px 15px}
+.btn-yellow{background:#facc15;color:#000;border:none;padding:10px 18px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;flex:1}
+.btn-green{background:#4ade80;color:#000;border:none;padding:10px 18px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer}
+.badge-center{text-align:center;margin:18px 15px}
+.badge-center span{border:1px solid #2a5a2a;background:#112211;color:#4ade80;padding:6px 14px;border-radius:20px;font-size:12px}
+.hero{text-align:center;padding:0 15px}
+.hero h1{font-size:32px;line-height:1.2;margin:10px 0 5px;font-weight:900}
+.hero p{color:#888;font-size:14px;margin:0}
+.card{background:#131913;border:1px solid #1e3a1e;border-radius:18px;padding:16px;margin:18px 15px}
+label{color:#888;font-size:13px;margin:12px 0 6px;display:block}
+select,input{width:100%;background:#0a0e0a;border:1px solid #2a3a2a;color:#fff;padding:12px;border-radius:10px;font-size:15px}
+.row2{display:flex;gap:10px}
+.row2>div{flex:1}
+.btn-calc{width:100%;background:#4ade80;color:#000;border:none;padding:14px;border-radius:12px;font-weight:900;font-size:16px;margin-top:16px;cursor:pointer}
+.live-small{text-align:center;color:#4ade80;font-size:12px;margin-top:10px}
+.result-card{border:1px solid #2a5a2a;border-radius:14px;padding:14px;margin:10px 0;background:#0f1a0f}
+.big{font-size:22px;font-weight:800;margin:4px 0}
+.btn-whatsapp{width:100%;background:#4ade80;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer}
+.seo{max-width:800px;margin:30px auto;padding:20px;color:#999;line-height:1.8;font-size:14px;text-align:left}
+.seo h2{color:#fff}
+.footer-live{text-align:center;color:#666;font-size:11px;padding:10px 15px}
+.footer-links{text-align:center;background:#f5f5f0;padding:18px}
+.footer-links a{color:#5b21b6;margin:0 10px;text-decoration:underline;font-size:14px}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">📈 TradeHisab <span>LotCalc.pk</span></div>
+<div class="live-badge">● LIVE 276.6 PKR / 95.3 INR</div>
+</div>
+<div class="top-btns">
+<button class="btn-yellow">🔥 Open Exness $10K Demo</button>
+<button class="btn-green">Get Started</button>
+</div>
+<div class="badge-center"><span>Made for Global Traders • Free • 20+ Currencies incl INR</span></div>
+<div class="hero">
+<h1>World's Simplest Trading Calculator</h1>
+<p>Calculate margin, profit/loss in your own currency — 154 Exness instruments</p>
+</div>
+<div class="card">
+<label>Select Asset (Searchable)</label>
+<select id="asset">
+<option>XAUUSD - Gold</option>
+<option>EURUSD - Euro</option>
+<option>GBPUSD - Pound</option>
+<option>USDJPY - Yen</option>
+<option>BTCUSD - Bitcoin</option>
+<option>XAGUSD - Silver</option>
+</select>
+<div style="color:#666;font-size:11px;margin-top:4px">Selected: XAUUSD | Metals | Contract 100</div>
+<div class="row2">
+<div><label>Display Currency 💱</label><select id="currency"><option value="PKR">PKR Rs - Pakistan</option><option value="INR">INR Rs - India</option><option value="USD">USD $</option><option value="EUR">EUR €</option></select></div>
+<div><label>Leverage</label><select id="lev"><option value="2000">2000 Exness</option><option value="1000">1000</option><option value="500">500</option></select></div>
+</div>
+<label>Balance USD</label><input type="number" id="bal" value="10000">
+<label>Lot</label><input type="number" id="lot" value="0.10" step="0.01">
+<label>Entry</label><input type="number" id="entry" value="2600">
+<button class="btn-calc" onclick="doCalc()">Calculate</button>
+<div class="live-small">✅ Live rates: 1 USD = 276.60 PKR | 95.29 INR</div>
+</div>
+<div class="card" id="resCard" style="display:none">
+<div style="font-weight:800;margin-bottom:10px">Results <span style="color:#888">in PKR (Rs)</span></div>
+<div class="result-card"><div style="color:#4ade80;font-weight:800">Margin Required</div><div class="big" id="mUSD">$13.00 USD</div><div class="big" style="color:#4ade80" id="mPKR">Rs 3595.85 PKR</div></div>
+<div class="result-card"><div style="color:#f87171;font-weight:800">Risk / Loss</div><div class="big" id="rUSD">100.00 USD</div><div class="big" id="rPKR">Rs 27660.36 PKR</div></div>
+<div class="result-card"><div style="color:#4ade80;font-weight:800">Risk %</div><div class="big" id="riskP">100.00 USD</div><div id="riskB" style="color:#888">1.00% of balance</div></div>
+<button class="btn-whatsapp">Share on WhatsApp</button>
+<button class="btn-yellow" style="width:100%;margin-top:10px">🔥 Get $10,000 Demo - Exness</button>
+</div>
+<div class="seo"><h2>What is Lot Size Calculator?</h2><p>A Lot Size Calculator helps traders calculate exact margin required to open a trade and profit loss in their own currency like PKR Rupees and INR. TradeHisab is made for Exness traders with leverage 2000 support.</p><h2>How to Use?</h2><p>Select Gold, Select PKR, Enter Balance 10000, Lot 0.10, Click Calculate to see Margin in PKR.</p></div>
+<div class="footer-links"><a href="/about.html">About</a> | <a href="/contact.html">Contact</a> | <a href="/privacy.html">Privacy</a> | <a href="/disclaimer.html">Disclaimer</a></div>
+<script>
+function doCalc(){
+ var bal=parseFloat(document.getElementById('bal').value)||0;
+ var lot=parseFloat(document.getElementById('lot').value)||0;
+ var entry=parseFloat(document.getElementById('entry').value)||0;
+ var lev=parseFloat(document.getElementById('lev').value)||2000;
+ var cur=document.getElementById('currency').value;
+ var rates={PKR:276.60,INR:95.29,USD:1,EUR:0.896,GBP:0.749,MYR:4.06};
+ var rate=rates[cur]||276.60;
+ var margin=(lot*100*entry)/lev;
+ var marginPKR=margin*rate;
+ var risk=lot*100*10;
+ var riskPKR=risk*rate;
+ document.getElementById('resCard').style.display='block';
+ document.getElementById('mUSD').innerText='$'+margin.toFixed(2)+' USD';
+ document.getElementById('mPKR').innerText='Rs '+marginPKR.toFixed(2)+' '+cur;
+ document.getElementById('rUSD').innerText=risk.toFixed(2)+' USD';
+ document.getElementById('rPKR').innerText='Rs '+riskPKR.toFixed(2)+' '+cur;
+ document.getElementById('riskP').innerText=risk.toFixed(2)+' USD / Rs'+Math.round(riskPKR);
+ document.getElementById('riskB').innerText=(bal>0? (risk/bal*100).toFixed(2):0)+'% of balance';
+}
+</script>
+</body>
+</html>
